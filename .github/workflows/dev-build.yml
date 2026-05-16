@@ -36,21 +36,12 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Clear updater pubkey for dev build
-        shell: bash
-        run: |
-          node -e "
-            const fs = require('fs');
-            const cfg = JSON.parse(fs.readFileSync('src-tauri/tauri.conf.json', 'utf8'));
-            cfg.plugins.updater.pubkey = '';
-            cfg.plugins.updater.endpoints = [];
-            fs.writeFileSync('src-tauri/tauri.conf.json', JSON.stringify(cfg, null, 2));
-          "
-
       - name: Build Tauri app (unsigned)
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ""
         with:
           # No tagName/releaseName → no GitHub release is created
           args: ""
