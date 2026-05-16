@@ -43,8 +43,7 @@ jobs:
         with:
           # No tagName/releaseName → no GitHub release is created
           # Override updater pubkey so Tauri doesn't require TAURI_SIGNING_PRIVATE_KEY
-          args: >-
-            --config "{\"plugins\":{\"updater\":{\"pubkey\":\"\",\"endpoints\":[]}}}"
+          args: --config src-tauri/tauri.ci.conf.json
 
       - name: Upload installer artifacts
         uses: actions/upload-artifact@v4
